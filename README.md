@@ -1,4 +1,4 @@
-## Static files of AI Wiki
+## [Static files of AI Wiki](https://github.com/xjtu-ai/static)
 
 这是 **[xjtu-ai.github.io](https://github.com/xjtu-ai/xjtu-ai.github.io)** 仓库的静态文件。请将 pdf 上传至此仓库。
 
