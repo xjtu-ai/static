@@ -1,6 +1,6 @@
 ## [Static files of AI Wiki](https://github.com/xjtu-ai/static)
 
-这是 **[xjtu-ai.github.io](https://github.com/xjtu-ai/xjtu-ai.github.io)** 仓库的静态文件。请将 pdf 上传至此仓库。
+这是 **[xjtu-ai.github.io](https://github.com/xjtu-ai/xjtu-ai.github.io)** 仓库的静态文件。请将 pdf 上传至此仓库。上传后会通过 CI 自动更新。
 
 此处的目录形式应该与 **[xjtu-ai.github.io](https://github.com/xjtu-ai/xjtu-ai.github.io)** 仓库中的 `docs` 文件夹一致。
 
