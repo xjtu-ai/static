@@ -8,5 +8,5 @@
 
 ```markdown
 ??? note "a"
-    <iframe loading="lazy" src="/static/course/a.pdf）"></iframe>
+    <iframe loading="lazy" src="/static/course/a.pdf type="application/pdf" width=100% height=1000px"></iframe>
 ```
