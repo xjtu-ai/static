@@ -2,7 +2,7 @@ name: Send submodule updates to parent repo
 
 on:
   push:
-    branches: 
+    branches:
       - main
       - master
 
@@ -10,19 +10,22 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with: 
+      - uses: actions/checkout@v4
+        with:
           repository: xjtu-ai/xjtu-ai.github.io
           token: ${{ secrets.UPDATE }}
+          fetch-depth: 0
 
       - name: Pull & update submodules recursively
         run: |
           git submodule update --init --recursive
           git submodule update --recursive --remote
-      - name: Commit
+
+      - name: Commit and Push
         run: |
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions - update submodules"
           git add --all
           git commit -m "Update submodules" || echo "No changes to commit"
+          git pull --rebase origin master
           git push
