@@ -30,7 +30,7 @@ jobs:
       # and let the required checks gate the submodule bump.
       - name: Open pull request for the submodule bump
         id: cpr
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.UPDATE }}
           base: master
