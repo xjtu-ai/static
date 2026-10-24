@@ -5,6 +5,10 @@ on:
     branches:
       - main
       - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   update:
@@ -21,11 +25,32 @@ jobs:
           git submodule update --init --recursive
           git submodule update --recursive --remote
 
-      - name: Commit and Push
+      # master is protected by a ruleset (pull request + required checks
+      # build / markdownlint), so never push to it directly. Open a PR instead
+      # and let the required checks gate the submodule bump.
+      - name: Open pull request for the submodule bump
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.UPDATE }}
+          base: master
+          branch: chore/update-static-submodule
+          delete-branch: true
+          add-paths: docs/static
+          commit-message: "chore: update static submodule"
+          title: "chore: update static submodule"
+          body: |
+            Automated submodule bump from `${{ github.repository }}`@`${{ github.sha }}`.
+
+            `docs/static` was updated to the latest `xjtu-ai/static` master.
+            Required checks (`build`, `markdownlint`) gate this change, so
+            `master` stays protected.
+
+      - name: Enable auto-merge once checks pass
+        if: steps.cpr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.UPDATE }}
+          PR_URL: ${{ steps.cpr.outputs.pull-request-url }}
         run: |
-          git config user.email "actions@github.com"
-          git config user.name "GitHub Actions - update submodules"
-          git add --all
-          git commit -m "Update submodules" || echo "No changes to commit"
-          git pull --rebase origin master
-          git push
+          gh pr merge --auto --squash --delete-branch "$PR_URL" \
+            || echo "::warning::could not enable auto-merge (already enabled, or token lacks pull_requests: write) — leaving the PR open for manual merge"
